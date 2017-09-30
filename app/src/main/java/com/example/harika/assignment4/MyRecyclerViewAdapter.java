@@ -1,6 +1,8 @@
 package com.example.harika.assignment4;
 
 import android.content.Context;
+import android.support.annotation.BoolRes;
+import android.support.annotation.StringDef;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +26,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<Map<String,?>> mDataset;
     private Context mContext;
     public OnItemClickListener mitemClickListener;
+    public CheckBox cSelected;
 
     public MyRecyclerViewAdapter(Context myContext,List<Map<String,?>> myDataset)
     {
@@ -29,8 +34,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         mDataset = myDataset;
     }
     public interface OnItemClickListener{
-        public void onItemClick(View view,int position);
+         public void onItemClick(View view,int position);
         public void onItemLongClick(View view,int position);
+
     }
 
 
@@ -48,6 +54,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public MyRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v ;
+
         switch (viewType) {
             case 0:
                 v = LayoutInflater.from(parent.getContext()).
@@ -57,10 +64,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             case 1:
                 v = LayoutInflater.from(parent.getContext()).
                         inflate(R.layout.cardview_one, parent, false);
+
                 return new ViewHolder(v);
             case 2:
                 v = LayoutInflater.from(parent.getContext()).
                         inflate(R.layout.cardview_two, parent, false);
+
                 return new ViewHolder(v);
 
         }
@@ -70,9 +79,20 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     @Override
-    public void onBindViewHolder(MyRecyclerViewAdapter.ViewHolder holder, int position) {
-        Map<String,?> movie=mDataset.get(position);
+    public void onBindViewHolder(final MyRecyclerViewAdapter.ViewHolder holder, int position) {
+        final Map<String,?> movie=mDataset.get(position);
         holder.bindMovieData(movie);
+
+        holder.vCheckbox.setOnCheckedChangeListener(null);
+        boolean b = (Boolean)movie.get("selection");
+        holder.vCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+               HashMap<String,Boolean> hb = (HashMap)movie.get("selction");
+                hb.put("selection",isChecked);
+            }
+        });
+
 
     }
 
@@ -95,6 +115,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             vTitle = (TextView) v.findViewById(R.id.title);
             vDescription = (TextView) v.findViewById(R.id.description);
             vCheckbox = (CheckBox)v.findViewById(R.id.selection);
+
+            Log.d("cjhecked status",String.valueOf(vCheckbox.isChecked()));
             v.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
@@ -120,7 +142,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
             });
 
-
+            Log.d("print check box status",String.valueOf(vCheckbox.isActivated()));
         }
         public void bindMovieData(Map<String,?> movie)
         {

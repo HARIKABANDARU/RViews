@@ -7,5 +7,109 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="image_style" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="fadeDuration">300</item>
+        <item name="actualImageScaleType">fitCenter</item>
+        <item name="failureImageScaleType">centerInside</item>
+        <item name="retryImageScaleType">centerCrop</item>
+        <item name="progressBarImageScaleType">centerInside</item>
+        <item name="progressBarImage">@drawable/progress_bar</item>
+        <item name="progressBarAutoRotateInterval">1000</item>
+    </style>
+
+    <style name="image_style_poster" >
+        <item name="android:layout_height">272px</item>
+        <item name="android:layout_width">185px</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="fadeDuration">300</item>
+        <item name="actualImageScaleType">fitCenter</item>
+        <item name="failureImageScaleType">centerInside</item>
+        <item name="retryImageScaleType">centerCrop</item>
+        <item name="progressBarImageScaleType">centerInside</item>
+        <item name="progressBarImage">@drawable/progress_bar</item>
+
+        <item name="progressBarAutoRotateInterval">1000</item>
+
+    </style>
+
+    <style name="movie_back_ground_image_style" parent="image_style">
+        <item name="viewAspectRatio">1.33</item>
+    </style>
+
+    <style name="movie_poster_image_style" parent="image_style">
+        <item name="viewAspectRatio">0.68</item>
+    </style>
+
+    <style name="text_view_style">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    linear_layout_containing_rating_release_date
+
+    <style name="movie_rating_text_view">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/rating_text_size</item>
+    </style>
+
+    <style name="movie_release_text_view" parent="text_view_style">
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">@dimen/movie_release_date</item>
+    </style>
+
+    <style name="movie_synopsis_text_view">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">@dimen/movie_synopsis_text_size</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="scroll_view">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fillViewport">true</item>
+    </style>
+
+    <style name="width_height_match_parent_layout_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="width_match_content_height_wrap_content">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="linear_layout_vertical_match_all" parent="width_height_match_parent_layout_view">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="linear_layout_horizontal_match_all" parent="width_height_match_parent_layout_view">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="linear_layout_all_match_with_below_margin">
+        <item name="android:layout_marginBottom">@dimen/linear_layout_vertical_margin</item>
+    </style>
+
+    <style name="linear_layout_all_match_with_horizontal_margin" parent="linear_layout_horizontal_match_all">
+        <item name="android:layout_margin">@dimen/linear_layout_horizontal_margin</item>
+    </style>
+
+    <style name="linear_layout_containing_rating_release_date" parent="@style/width_match_content_height_wrap_content">
+        <item name="android:layout_margin">@dimen/linear_layout_horizontal_margin</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
 
 </resources>

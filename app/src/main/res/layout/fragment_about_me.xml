@@ -1,0 +1,62 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/name"
+                android:layout_margin="@dimen/margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name : HARIKA BANDARU"
+                android:gravity="center"
+                android:textColor="@color/deep_orange"
+                android:textSize="@dimen/text_size"
+                />
+            <TextView
+                android:id="@+id/title"
+                android:layout_margin="@dimen/margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Course : CIS600"
+                android:gravity="center"
+                android:textColor="@color/deep_orange"
+                android:textSize="@dimen/text_size"
+
+                />
+            <TextView
+                android:id="@+id/asgn"
+                android:layout_margin="@dimen/margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android Programming : Assignment #3"
+                android:gravity="center"
+                android:textColor="@color/deep_orange"
+                android:textSize="@dimen/text_size"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+            <ImageView
+                android:id="@+id/pokemanImage"
+                android:layout_margin="@dimen/margin"
+                android:src="@drawable/new_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</FrameLayout>

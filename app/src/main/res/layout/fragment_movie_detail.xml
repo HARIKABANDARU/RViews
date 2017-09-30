@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/width_height_match_parent_layout_view">
+
+    <ScrollView style="@style/scroll_view">
+
+        <LinearLayout style="@style/linear_layout_vertical_match_all">
+
+            <TextView
+                android:id="@+id/movieTitle"
+                android:textSize="35sp"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Sardar Gabbar Singh" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/movieImage"
+                style="@style/movie_back_ground_image_style" />
+
+
+            <LinearLayout style="@style/linear_layout_containing_rating_release_date">
+
+                <LinearLayout style="@style/linear_layout_horizontal_match_all">
+
+                    <TextView
+                        android:id="@+id/movieRating"
+                        style="@style/movie_rating_text_view"
+                        tools:text="8.1/10"/>
+
+                    <TextView
+                        android:id="@+id/movieReleaseDate"
+                        style="@style/movie_release_text_view"
+                        tools:text="2016 - 11 - 14"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/movieSynopsis"
+                    style="@style/movie_synopsis_text_view"
+                    tools:text = "The Synopsis goes here ..."/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

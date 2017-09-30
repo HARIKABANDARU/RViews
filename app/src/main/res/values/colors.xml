@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="main_bg">#BDBDBD</color>
+    <color name="deep_orange">#C2185B</color>
+    <color name="brown">#BCAAA4</color>
+    <color name="calcBackground">#EF6C00</color>
+    <color name="white">#FFFFFF</color>
+    <color name="nephritis">#27ae60</color>
+    <color name="black">#000000</color>
+    <color name="material_yellow">#FFEB3B</color>
+    <color name="material_orange">#FF9800</color>
+    <color name="border">#F0F4C3</color>
+    <color name="master_bg">#E6EE9C</color>
+    <color name="darkbrown">#795548</color>
 </resources>
