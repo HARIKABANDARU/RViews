@@ -1,5 +1,6 @@
 package com.example.harika.assignment4;
 
+import android.content.Context;
 import android.support.annotation.BoolRes;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,10 +15,14 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +31,8 @@ import java.io.*;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
+
+import static android.R.attr.mode;
 
 public class RecyclerViewFragment extends Fragment {
     MyRecyclerViewAdapter rviewAdatper;
@@ -36,6 +43,7 @@ public class RecyclerViewFragment extends Fragment {
     Button SelectAll;
     Button Delete;
     Button Sort;
+    Context context;
     HashMap<String,Boolean> item;
     public interface onIClickListener{
         public void onListItemSelected(int position,HashMap<String,?> movie);
@@ -50,33 +58,14 @@ public class RecyclerViewFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(mLayoutManager);
-        rviewAdatper = new MyRecyclerViewAdapter(getActivity(),mData.getMoviesList());
+        rviewAdatper = new MyRecyclerViewAdapter(mData.getMoviesList(),false);
         recList.setAdapter(rviewAdatper);
         mListenr = (onIClickListener)getContext();
-        rviewAdatper.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(View v,int position)
-            {
-                HashMap<String,?> movie = mData.getItem(position);
-                mListenr.onListItemSelected(position,movie);
-            }
-            @Override
-            public void onItemLongClick(View v,int position)
-            {
-                List<Map<String,?>> movieList = mData.getMoviesList();
-                Log.d("sie",String.valueOf(movieList.size()));
-                HashMap<String,?> movie = (HashMap<String,?>)mData.getItem(position).clone();
-                movieList.add(position,movie);
-                Log.d("after adding sie",String.valueOf(movieList.size()));
-                rviewAdatper.notifyItemInserted(position);
-
-            }
-        });
+        setAdapterItemClickListener(rviewAdatper);
         itemAnimation();
         adapterAnimattion();
         ClearAll = (Button)rootView.findViewById(R.id.clear);
-        ClearAll.setOnClickListener(new Button.OnClickListener()
+        ClearAll.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v){
@@ -88,7 +77,7 @@ public class RecyclerViewFragment extends Fragment {
                     }
                 });
         SelectAll = (Button)rootView.findViewById(R.id.select);
-        SelectAll.setOnClickListener(new Button.OnClickListener()
+        SelectAll.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
@@ -100,10 +89,11 @@ public class RecyclerViewFragment extends Fragment {
             }
         });
         Delete = (Button)rootView.findViewById(R.id.delete);
-        Delete.setOnClickListener(new Button.OnClickListener()
+        Delete.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v){
+                Log.d("LIST_SELECTED",mData.moviesList.toString());
                 for(int i = rviewAdatper.getItemCount()-1;i>=0;i--)
                 {
                     item = (HashMap<String,Boolean>)mData.getItem(i);
@@ -121,18 +111,41 @@ public class RecyclerViewFragment extends Fragment {
        Sort.setOnClickListener(new Button.OnClickListener()
         {
             @Override
-            public void onClick(View v){
-                List<Map<String,?>> mList = mData.getMoviesList();
-                Collections.sort(mList, new Comparator<Map<String, ?>>() {
+           public void onClick(View v){
+                rviewAdatper.setOnSortClicked(true);
+
+                List<Map<String,?>> mDataset = mData.getMoviesList();
+                Log.d("LIST",mDataset.toString());
+
+                Collections.sort(mDataset, new Comparator<Map<String, ?>>() {
                     @Override
-                    public int compare(Map<String, ?> stringMap, Map<String, ?> t1) {
-                        Date date1 = new SimpleDateFormat("yyyy-mm-dd").parse(stringMap.get("release"));
+                    public int compare(Map<String, ?> item1, Map<String, ?> item2) {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date1 = new Date(0),date2 = new Date(0);
+                        try {
+                            Log.d("LIST_ITEM",item1.get("release").toString());
+                            date1 = new Date(dateFormat.parse(item1.get("release").toString()).getTime());
+                            date2 = new Date(dateFormat.parse(item2.get("release").toString()).getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        return date1.compareTo(date2);
                     }
                 });
+
+                Log.d("LIST_SORT",mDataset.toString());
+                rviewAdatper = new MyRecyclerViewAdapter(mDataset,true);
+                setAdapterItemClickListener(rviewAdatper);
+                recList.setAdapter(rviewAdatper);
+                //rviewAdatper.setmDataset(mDataset);
+                //rviewAdatper.notifyDataSetChanged();
+
             }
         });
         return rootView;
     }
+
   /*  public void addItem(int position,HashMap<String,?> movie)
     {
         List<Map<String,?>> movieList = (List<Map<String,?>>)mData;
@@ -157,6 +170,31 @@ public class RecyclerViewFragment extends Fragment {
         AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(rviewAdatper);
         ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(rviewAdatper);
         recList.setAdapter(scaleAdapter);
+    }
+
+    private void setAdapterItemClickListener(MyRecyclerViewAdapter adapter)
+    {
+        adapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(View v,int position)
+            {
+                HashMap<String,?> movie = mData.getItem(position);
+                mListenr.onListItemSelected(position,movie);
+            }
+            @Override
+            public void onItemLongClick(View v,int position)
+            {
+                List<Map<String,?>> movieList = mData.getMoviesList();
+                Log.d("sie",String.valueOf(movieList.size()));
+                HashMap<String,?> movie = (HashMap<String,?>)mData.getItem(position).clone();
+                movieList.add(position,movie);
+                Log.d("after adding sie",String.valueOf(movieList.size()));
+                rviewAdatper.notifyItemInserted(position);
+
+
+            }
+        });
     }
 }
 

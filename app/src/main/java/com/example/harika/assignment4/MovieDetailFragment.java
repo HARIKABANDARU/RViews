@@ -23,6 +23,7 @@ public class MovieDetailFragment extends Fragment {
     TextView movieRating;
     TextView movieReleaseDate;
     TextView movieSynopsis;
+    TextView movieId;
     SimpleDraweeView moviePosterImage;
     List<Map<String, ?>> moviesList;
     MovieData movieBean;
@@ -70,10 +71,14 @@ public class MovieDetailFragment extends Fragment {
      movieRating = (TextView) detailView.findViewById(R.id.movieRating);
         movieSynopsis = (TextView) detailView.findViewById(R.id.movieSynopsis);
         moviePosterImage = detailView.findViewById(R.id.movieImage);
+       movieId = (TextView)detailView.findViewById(R.id.movieId);
        // movieTitle.setText((CharSequence) m1.get("title"));
         StringBuffer voteAverage = new StringBuffer(String.valueOf(m1.get("voteAverage")));
         movieRating.setText(voteAverage.append("/10"));
-        movieReleaseDate.setText((CharSequence) m1.get("release"));
+        StringBuffer idvalue = new StringBuffer(String.valueOf(m1.get("id")));
+        String idText = "MOVIE ID : ";
+       movieId.setText(idText.concat(idvalue.toString()));
+        movieReleaseDate.setText((CharSequence) m1.get("release").toString());
         movieSynopsis.setText((CharSequence) m1.get("overview"));
 
      Uri poster_uri = new Uri.Builder()

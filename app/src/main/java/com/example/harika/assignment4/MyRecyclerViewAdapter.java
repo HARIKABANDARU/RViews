@@ -24,18 +24,31 @@ import java.util.Map;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
     private List<Map<String,?>> mDataset;
-    private Context mContext;
     public OnItemClickListener mitemClickListener;
     public CheckBox cSelected;
+    Boolean onSortClicked= false;
 
-    public MyRecyclerViewAdapter(Context myContext,List<Map<String,?>> myDataset)
+    public void setOnSortClicked(Boolean onSortClicked) {
+        this.onSortClicked = onSortClicked;
+    }
+
+    public void setmDataset(List<Map<String, ?>> mDataset) {
+        this.mDataset = mDataset;
+    }
+
+    public MyRecyclerViewAdapter(List<Map<String, ?>> mDataset) {
+        this.mDataset = mDataset;
+    }
+
+    public MyRecyclerViewAdapter( List<Map<String,?>> myDataset,Boolean sortClicked)
     {
-        mContext = myContext;
         mDataset = myDataset;
+        onSortClicked = sortClicked;
     }
     public interface OnItemClickListener{
          public void onItemClick(View view,int position);
         public void onItemLongClick(View view,int position);
+
 
     }
 
@@ -48,6 +61,24 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public int getItemViewType(int position)
     {
+        if(onSortClicked)
+        {
+            if(position <5)
+            {
+                return 0;
+            }
+            else if(position >20)
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+
+
+
         return position%3;
     }
 
@@ -55,45 +86,60 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public MyRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v ;
 
-        switch (viewType) {
-            case 0:
-                v = LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.cardview, parent, false);
+        if(onSortClicked)
+        {
+            switch (viewType) {
+                case 0:
+                    v = LayoutInflater.from(parent.getContext()).
+                            inflate(R.layout.cardview, parent, false);
 
-                return new ViewHolder(v);
-            case 1:
-                v = LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.cardview_one, parent, false);
+                    return new ViewHolder(v);
+                case 1:
+                    v = LayoutInflater.from(parent.getContext()).
+                            inflate(R.layout.cardview_one, parent, false);
 
-                return new ViewHolder(v);
-            case 2:
-                v = LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.cardview_two, parent, false);
+                    return new ViewHolder(v);
+                case 2:
+                    v = LayoutInflater.from(parent.getContext()).
+                            inflate(R.layout.cardview_two, parent, false);
 
-                return new ViewHolder(v);
+                    return new ViewHolder(v);
 
+            }
         }
+        else {
 
+            v = LayoutInflater.from(parent.getContext()).
+                    inflate(R.layout.cardview, parent, false);
+            return new ViewHolder(v);
+        }
         return null;
 
     }
 
     @Override
     public void onBindViewHolder(final MyRecyclerViewAdapter.ViewHolder holder, int position) {
-        final Map<String,?> movie=mDataset.get(position);
-        holder.bindMovieData(movie);
+        final HashMap movie=(HashMap) mDataset.get(position);
+        Boolean selection = (Boolean) movie.get("selection");
 
         holder.vCheckbox.setOnCheckedChangeListener(null);
-        boolean b = (Boolean)movie.get("selection");
-        holder.vCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        holder.vCheckbox.setChecked(selection);
+        holder.vCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-               HashMap<String,Boolean> hb = (HashMap)movie.get("selction");
-                hb.put("selection",isChecked);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(compoundButton.isChecked())
+                {
+                   compoundButton.setChecked(true);
+                    movie.put("selection",true);
+                }
+                else
+                {
+                    compoundButton.setChecked(false);
+                    movie.put("selection",false);
+                }
             }
         });
-
-
+        holder.bindMovieData(movie);
     }
 
     @Override
@@ -103,7 +149,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
 
         public ImageView vIcon;
         public TextView vTitle;
@@ -120,6 +165,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             v.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
+                    Log.d("ITEM_CLICK",mitemClickListener.toString());
                     if(mitemClickListener!=null){
                         /*In order to make code reusable write allow the user to take decission what to do after  had been occured
                         This done by introducing an interface "mitemClickListener is called eventhandler object and onItem is called API
@@ -142,14 +188,23 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
             });
 
+
             Log.d("print check box status",String.valueOf(vCheckbox.isActivated()));
         }
-        public void bindMovieData(Map<String,?> movie)
+        public void bindMovieData(final Map<String,?> movie)
         {
             vIcon.setImageResource((Integer)movie.get("image"));
             vTitle.setText((String)movie.get("title"));
             vDescription.setText((String)movie.get("overview"));
-            vCheckbox.setChecked((Boolean)movie.get("selection"));
+            /*vCheckbox.setChecked((Boolean)movie.get("selection"));
+            vCheckbox.setOnClickListener(new View.OnClickListener(){
+                final HashMap<String, Boolean> temp = (HashMap<String,Boolean>)movie;
+                @Override
+                public void onClick(View v) {
+                    temp.put("selection", true);
+                }
+            });*/
+
         }
 
     }

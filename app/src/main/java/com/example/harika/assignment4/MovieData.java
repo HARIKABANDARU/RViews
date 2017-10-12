@@ -1,5 +1,10 @@
 package com.example.harika.assignment4;
 
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,17 +33,6 @@ public class MovieData {
     }
 
     public MovieData() {
-        Integer vote_count;
-        Integer id;
-        Double vote_avg;
-        Double popularity ;
-        String title ;
-        String poster_path ;
-        String backdrop_path ;
-        String overview ;
-        String release ;
-        boolean selection;
-
 
         moviesList = new ArrayList<Map<String, ?>>();
         moviesList.add(createMovie(321612,5185,R.drawable.beauty_and_the_beast,6.8,326.689681,"Beauty and the Beast","/tWqifoYuwLETmmasnGHO7xBjEtt.jpg","/6aUWe0GSl69wMTSWWexsorMIvwU.jpg","A live-action adaptation of Disney's version of the classic 'Beauty and the Beast' tale of a cursed prince and a beautiful young woman who helps him break the spell.","2017-03-16",false));
@@ -79,9 +73,16 @@ public class MovieData {
         movie.put("poster", poster);
         movie.put("backdrop", backdrop);
         movie.put("overview", overview);
-        movie.put("release", release);
-        movie.put("selection",selection);
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = new Date(dateFormat.parse(release).getTime());
+            movie.put("release",date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        movie.put("selection",selection);
         return movie;
     }
+
 }

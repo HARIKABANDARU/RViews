@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_margin="5dp"
     card_view:cardCornerRadius="5dp"
+
     android:layout_height="wrap_content">
     <LinearLayout
+        android:background="@color/cardone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -35,13 +37,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textStyle="bold"/>
         <TextView
             android:maxLines="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/description"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textStyle="bold"/>
         </LinearLayout>
         <CheckBox
             android:id="@+id/selection"

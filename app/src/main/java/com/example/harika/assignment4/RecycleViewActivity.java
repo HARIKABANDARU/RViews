@@ -12,14 +12,23 @@ public class RecycleViewActivity extends AppCompatActivity implements RecyclerVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle_view);
+        RecyclerViewFragment rFragment = new RecyclerViewFragment();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, rFragment).addToBackStack(null).commit();
+        }
 
         // MovieDetailFragment mfragment = new MovieDetailFragment();
         //getSupportFragmentManager().beginTransaction().add(R.id.container,mfragment).commit();
-       RecyclerViewFragment rFragment = new RecyclerViewFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container,rFragment).addToBackStack(null).commit();
     }
 
+
+
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+        @Override
     public void onListItemSelected(int position, HashMap<String, ?> movie) {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container,MovieDetailFragment.newInstance(movie)).addToBackStack(null).commit();
